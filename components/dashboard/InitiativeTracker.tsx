@@ -22,23 +22,23 @@ const STATUS_CFG: Record<
 > = {
   green: {
     label: "On Track",
-    bg: "bg-[#E6F4EE]",
-    text: "text-[#00875A]",
-    hex: "#00875A",
+    bg: "bg-[#ECFDF3]",
+    text: "text-[#0D7C3D]",
+    hex: "#0D7C3D",
     Icon: CheckCircle2,
   },
   amber: {
     label: "At Risk",
-    bg: "bg-[#FFF4E5]",
-    text: "text-[#FF8B00]",
-    hex: "#FF8B00",
+    bg: "bg-[#FFF7ED]",
+    text: "text-[#B45309]",
+    hex: "#B45309",
     Icon: AlertTriangle,
   },
   red: {
     label: "Delayed",
-    bg: "bg-[#FFEBE6]",
-    text: "text-[#DE350B]",
-    hex: "#DE350B",
+    bg: "bg-[#FFF1F0]",
+    text: "text-[#C4320A]",
+    hex: "#C4320A",
     Icon: XCircle,
   },
 };
@@ -63,18 +63,18 @@ export function InitiativeTable() {
     <div>
       {/* Header */}
       <div className="flex items-center gap-3 mb-5">
-        <h3 className="text-[13px] uppercase tracking-[0.08em] text-text-secondary font-semibold">
+        <h3 className="text-[13px] uppercase tracking-widest text-text-secondary font-semibold">
           Strategic Initiatives
         </h3>
-        <span className="px-2 py-1 rounded text-[11px] font-semibold uppercase text-text-secondary bg-surface">
+        <span className="px-2 py-1 rounded-md text-[11px] font-semibold uppercase text-text-secondary bg-surface">
           {INITIATIVES.length} Programs
         </span>
       </div>
 
-      {/* Table */}
-      <div className="bg-white border border-border rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden">
+      {/* Table — no outer border per spec */}
+      <div className="bg-white rounded-xl shadow-card overflow-hidden">
         {/* Column headers */}
-        <div className="grid grid-cols-[1fr_140px_100px_160px_100px_1fr] gap-2 px-5 py-3 border-b border-border text-[11px] uppercase tracking-[0.08em] text-text-secondary font-semibold">
+        <div className="grid grid-cols-[1fr_140px_100px_160px_100px_1fr] gap-2 px-5 py-3 border-b border-gray-100 text-[11px] uppercase tracking-widest text-text-secondary font-semibold">
           <span>Initiative</span>
           <span>Owner</span>
           <span>Due Date</span>
@@ -93,9 +93,9 @@ export function InitiativeTable() {
               <button
                 onClick={() => setExpandedId(expanded ? null : init.id)}
                 className={clsx(
-                  "grid grid-cols-[1fr_140px_100px_160px_100px_1fr] gap-2 items-center w-full px-5 h-[44px] text-left border-b border-border transition-colors",
-                  "hover:bg-[#F8FAFC]",
-                  expanded && "bg-[#F8FAFC]"
+                  "grid grid-cols-[1fr_140px_100px_160px_100px_1fr] gap-2 items-center w-full px-5 h-[44px] text-left border-b border-gray-100 transition-colors",
+                  "hover:bg-surface",
+                  expanded && "bg-surface"
                 )}
               >
                 {/* Name */}
@@ -124,23 +124,23 @@ export function InitiativeTable() {
                   <span>{formatDate(init.dueDate)}</span>
                 </div>
 
-                {/* Progress bar */}
+                {/* Progress bar — 8px height, rounded-full */}
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 h-1.5 rounded-full bg-surface overflow-hidden">
+                  <div className="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-primary transition-all"
-                      style={{ width: `${init.progress}%` }}
+                      className="h-full rounded-full transition-all"
+                      style={{ width: `${init.progress}%`, backgroundColor: cfg.hex }}
                     />
                   </div>
-                  <span className="text-[12px] font-display text-text-primary w-8 text-right">
+                  <span className="text-[12px] font-semibold tabular-nums text-text-primary w-8 text-right">
                     {init.progress}%
                   </span>
                 </div>
 
-                {/* Status badge */}
+                {/* Status badge — colored pill */}
                 <span
                   className={clsx(
-                    "inline-flex items-center justify-center px-2 py-1 rounded text-[11px] font-semibold uppercase w-fit",
+                    "inline-flex items-center justify-center px-2 py-1 rounded-md text-[11px] font-semibold uppercase w-fit",
                     cfg.bg,
                     cfg.text
                   )}
@@ -156,10 +156,10 @@ export function InitiativeTable() {
 
               {/* Expanded detail */}
               {expanded && (
-                <div className="px-5 py-4 bg-[#F8FAFC] border-b border-border">
+                <div className="px-5 py-4 bg-surface border-b border-gray-100">
                   <div className="grid grid-cols-2 gap-4 text-[14px]">
                     <div>
-                      <span className="text-[11px] uppercase tracking-[0.08em] text-text-secondary font-semibold block mb-1">
+                      <span className="text-[11px] uppercase tracking-widest text-text-secondary font-semibold block mb-1">
                         Description
                       </span>
                       <p className="text-text-primary leading-[1.5]">
@@ -167,7 +167,7 @@ export function InitiativeTable() {
                       </p>
                     </div>
                     <div>
-                      <span className="text-[11px] uppercase tracking-[0.08em] text-text-secondary font-semibold block mb-1">
+                      <span className="text-[11px] uppercase tracking-widest text-text-secondary font-semibold block mb-1">
                         Current Milestone
                       </span>
                       <p className="text-text-primary leading-[1.5]">
@@ -213,12 +213,12 @@ export function InitiativeSummaryCard({
   ];
 
   return (
-    <div className="bg-white border border-border rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-5">
+    <div className="bg-white border border-gray-100 rounded-xl shadow-card p-5 card-hover">
       <div className="flex items-center justify-between mb-4">
-        <span className="text-[11px] uppercase tracking-[0.08em] text-text-secondary font-semibold">
+        <span className="text-[11px] uppercase tracking-widest text-text-secondary font-semibold">
           Strategic Initiatives
         </span>
-        <span className="px-2 py-1 rounded text-[11px] font-semibold uppercase text-text-secondary bg-surface">
+        <span className="px-2 py-1 rounded-md text-[11px] font-semibold uppercase text-text-secondary bg-surface">
           {INITIATIVES.length} Programs
         </span>
       </div>
@@ -228,7 +228,7 @@ export function InitiativeSummaryCard({
           <div key={s.label} className="flex items-center gap-2">
             <s.Icon size={16} style={{ color: s.hex }} />
             <span
-              className="text-[22px] font-bold font-display"
+              className="text-[22px] font-bold font-heading tabular-nums"
               style={{ color: s.hex }}
             >
               {s.count}

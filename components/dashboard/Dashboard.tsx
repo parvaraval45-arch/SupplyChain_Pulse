@@ -6,6 +6,7 @@ import AIInsightPanel from "./AIInsightPanel";
 import DrillDownSection from "./DrillDownSection";
 import { InitiativeTable, InitiativeSummaryCard } from "./InitiativeTracker";
 import RiskRadar from "./RiskRadar";
+import PerformanceTab from "./PerformanceTab";
 
 export default function Dashboard() {
   return (
@@ -26,11 +27,8 @@ export default function Dashboard() {
           )}
           {activeTab === "initiatives" && <InitiativeTable />}
           {activeTab === "risk" && <RiskRadar />}
-          {activeTab === "performance" && (
-            <div className="text-text-secondary text-[14px] leading-[1.5]">
-              <span className="sr-only">{String(ceoMode)}</span>
-            </div>
-          )}
+          {activeTab === "performance" && <PerformanceTab />}
+          <span className="sr-only">{String(ceoMode)}</span>
         </div>
       )}
     </DashboardLayout>

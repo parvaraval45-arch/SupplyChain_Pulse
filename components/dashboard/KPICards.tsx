@@ -5,72 +5,74 @@ import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { KPI_DATA, type KPI, type StatusColor } from "@/data/mockData";
 import { useDelayedLoad, SkeletonCard } from "@/components/ui/Skeleton";
 
-const STATUS_COLOR: Record<StatusColor, string> = {
-  green: "#00875A",
-  amber: "#FF8B00",
-  red: "#DE350B",
+const STATUS_HEX: Record<StatusColor, string> = {
+  green: "#0D7C3D",
+  amber: "#B45309",
+  red: "#C4320A",
 };
 
 function KPICard({ kpi }: { kpi: KPI }) {
-  const color = STATUS_COLOR[kpi.status];
+  const color = STATUS_HEX[kpi.status];
   const trendUp = kpi.trend === "up";
   const trendIsPositive =
     kpi.id === "supply-chain-cost" ? !trendUp : trendUp;
   const TrendIcon = trendUp ? TrendingUp : TrendingDown;
-  const trendColor = trendIsPositive ? "#00875A" : "#DE350B";
 
   const chartData = kpi.history.map((v, i) => ({ i, v }));
 
   return (
-    <div className="relative bg-white border border-border rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-5 flex flex-col gap-3 overflow-hidden">
-      {/* Label + status dot */}
+    <div className="relative bg-white border border-gray-100 rounded-xl shadow-card p-5 flex flex-col gap-3 overflow-hidden card-hover">
+      {/* Label + status dot + trend badge */}
       <div className="flex items-center justify-between">
-        <span className="text-[11px] uppercase tracking-[0.08em] text-text-secondary font-semibold">
+        <span className="text-[11px] uppercase tracking-widest text-gray-400 font-semibold">
           {kpi.label}
         </span>
-        <span
-          className="w-2 h-2 rounded-full shrink-0"
-          style={{ backgroundColor: color }}
-        />
+        <div className="flex items-center gap-2">
+          <span
+            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold tabular-nums ${
+              trendIsPositive
+                ? "bg-[#ECFDF3] text-[#0D7C3D]"
+                : "bg-[#FFF1F0] text-[#C4320A]"
+            }`}
+          >
+            <TrendIcon size={12} />
+            {kpi.trendValue}
+          </span>
+          <span
+            className="w-2 h-2 rounded-full shrink-0"
+            style={{ backgroundColor: color }}
+          />
+        </div>
       </div>
 
       {/* Main value */}
-      <p className="font-display text-[36px] leading-none text-text-primary">
+      <p className="text-4xl font-semibold tracking-tight text-text-primary tabular-nums">
         {kpi.value}
-        <span className="text-[20px]">{kpi.unit}</span>
+        <span className="text-[18px] text-text-secondary font-normal">{kpi.unit}</span>
       </p>
 
-      {/* Target + trend */}
-      <div className="flex items-center justify-between text-[12px]">
-        <span className="text-text-secondary">
-          Target: {kpi.target}
-          {kpi.unit}
-        </span>
-        <span
-          className="flex items-center gap-1 font-semibold"
-          style={{ color: trendColor }}
-        >
-          <TrendIcon size={14} />
-          {kpi.trendValue}
-        </span>
-      </div>
+      {/* Target */}
+      <span className="text-[12px] text-text-secondary tabular-nums">
+        Target: {kpi.target}
+        {kpi.unit}
+      </span>
 
       {/* Sparkline */}
-      <div className="h-12 -mx-1">
+      <div className="h-10 -mx-1">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             <Line
               type="monotone"
               dataKey="v"
               stroke={color}
-              strokeWidth={2}
+              strokeWidth={1.5}
               dot={false}
             />
           </LineChart>
         </ResponsiveContainer>
       </div>
 
-      {/* Bottom status bar */}
+      {/* Bottom 3px colored bar */}
       <div
         className="absolute bottom-0 left-0 right-0 h-[3px]"
         style={{ backgroundColor: color }}

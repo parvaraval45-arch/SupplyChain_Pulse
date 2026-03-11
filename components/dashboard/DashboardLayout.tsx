@@ -5,7 +5,7 @@ import {
   LayoutDashboard,
   TrendingUp,
   CheckSquare,
-  ShieldAlert,
+  Shield,
   Calendar,
   Printer,
   X,
@@ -18,7 +18,7 @@ const NAV_ITEMS: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "performance", label: "Performance", icon: TrendingUp },
   { id: "initiatives", label: "Initiatives", icon: CheckSquare },
-  { id: "risk", label: "Risk Radar", icon: ShieldAlert },
+  { id: "risk", label: "Risk Radar", icon: Shield },
 ];
 
 const PAGE_TITLES: Record<Tab, string> = {
@@ -51,22 +51,22 @@ export default function DashboardLayout({
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* ── Sidebar ── */}
-      <aside className="print:hidden flex flex-col justify-between w-[220px] shrink-0 bg-white border-r border-border">
+      {/* ── Sidebar — Dark Navy ── */}
+      <aside className="print:hidden flex flex-col justify-between w-[220px] shrink-0 bg-[#071D49]">
         {/* Logo + nav */}
         <div>
           {/* Brand */}
           <div className="px-5 pt-6 pb-5">
-            <h1 className="font-display text-[22px] leading-tight text-primary">
+            <h1 className="font-heading text-[22px] font-bold leading-tight text-white">
               AbbVie
             </h1>
-            <span className="text-[11px] uppercase tracking-widest text-text-secondary font-sans">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-sans">
               Supply Chain Pulse
             </span>
           </div>
 
           {/* Navigation */}
-          <nav className="flex flex-col gap-0.5 px-2">
+          <nav className="flex flex-col gap-0.5 px-3">
             {NAV_ITEMS.map(({ id, label, icon: Icon }) => {
               const active = activeTab === id;
               return (
@@ -74,10 +74,10 @@ export default function DashboardLayout({
                   key={id}
                   onClick={() => setActiveTab(id)}
                   className={clsx(
-                    "flex items-center gap-3 w-full px-3 py-2.5 rounded-md text-[13px] font-medium transition-colors text-left",
+                    "flex items-center gap-3 w-full px-3 py-2.5 rounded-md text-[13px] font-medium transition-all text-left",
                     active
-                      ? "border-l-[3px] border-primary bg-[#F0F6FF] text-primary"
-                      : "border-l-[3px] border-transparent text-text-secondary hover:bg-surface hover:text-text-primary"
+                      ? "border-l-[3px] border-[#0066CC] bg-white/10 text-white"
+                      : "border-l-[3px] border-transparent text-gray-400 hover:bg-white/5 hover:text-gray-200"
                   )}
                 >
                   <Icon size={18} strokeWidth={active ? 2 : 1.5} />
@@ -90,7 +90,7 @@ export default function DashboardLayout({
 
         {/* Bottom badge */}
         <div className="px-5 pb-5">
-          <div className="flex items-center gap-2 text-[11px] text-text-secondary">
+          <div className="flex items-center gap-2 text-[11px] text-gray-500">
             <Calendar size={14} />
             <span>Q2 2026 Review</span>
           </div>
@@ -99,9 +99,9 @@ export default function DashboardLayout({
 
       {/* ── Main area ── */}
       <div className="flex flex-col flex-1 min-w-0">
-        {/* Header */}
-        <header className="print:hidden flex items-center justify-between h-14 px-6 bg-white border-b border-border shrink-0">
-          <h2 className="text-[18px] font-bold text-text-primary">
+        {/* Header — White bg, subtle bottom border */}
+        <header className="print:hidden flex items-center justify-between h-14 px-6 bg-white border-b border-gray-100 shrink-0">
+          <h2 className="text-[18px] font-heading font-bold text-text-primary">
             {PAGE_TITLES[activeTab]}
           </h2>
 
@@ -113,10 +113,10 @@ export default function DashboardLayout({
                 if (!ceoMode) setActiveTab("overview");
               }}
               className={clsx(
-                "px-3 py-1.5 rounded text-[12px] font-medium border transition-colors",
+                "px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors",
                 ceoMode
                   ? "bg-primary text-white border-primary"
-                  : "bg-white text-text-secondary border-border hover:border-primary hover:text-primary"
+                  : "bg-white text-text-secondary border-gray-200 hover:border-primary hover:text-primary"
               )}
             >
               CEO View
@@ -125,14 +125,14 @@ export default function DashboardLayout({
             {/* Export PDF */}
             <button
               onClick={handleExport}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-primary text-white text-[12px] font-medium hover:bg-dark transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-[12px] font-medium hover:bg-[#0055B3] transition-colors"
             >
               <Printer size={14} />
               Export PDF
             </button>
 
             {/* Timestamp */}
-            <span className="text-[12px] text-text-secondary whitespace-nowrap">
+            <span className="text-[12px] text-text-secondary whitespace-nowrap tabular-nums">
               Updated 09:41 AM CT
             </span>
           </div>
@@ -151,7 +151,7 @@ export default function DashboardLayout({
           </div>
         )}
 
-        {/* Content */}
+        {/* Content — #F8FAFC background */}
         <main className="flex-1 overflow-y-auto bg-surface p-6 print:bg-white print:p-0 print:overflow-visible">
           {children?.({ activeTab, ceoMode, setActiveTab })}
         </main>

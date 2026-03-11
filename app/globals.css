@@ -14,28 +14,33 @@ html {
 }
 
 body {
-  background: #ffffff;
-  color: #1a1a2e;
-  font-family: "DM Sans", sans-serif;
+  background: #F8FAFC;
+  color: #0F172A;
+  font-family: var(--font-inter), "Inter", system-ui, sans-serif;
+}
+
+/* Tabular numbers for all numeric displays */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f4f6f9;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #a0b4cc;
+  background: #CBD5E1;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0057a8;
+  background: #94A3B8;
 }
 
 /* Toast fade-in animation */
@@ -61,7 +66,7 @@ body {
 }
 
 .shimmer-bar {
-  background: linear-gradient(90deg, #F4F6F9 25%, #E8ECF1 50%, #F4F6F9 75%);
+  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
@@ -74,6 +79,20 @@ body {
 @keyframes tab-fade {
   0% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+/* Risk brief panel fade-in */
+@keyframes briefFadeIn {
+  0% { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Card hover transition */
+.card-hover {
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.card-hover:hover {
+  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.08), 0 1px 3px -1px rgb(0 0 0 / 0.06);
 }
 
 /* ─── Print Styles ────────────────────────────────────────────────────────── */
@@ -94,7 +113,7 @@ body {
   }
 
   /* Hide interactive / non-printable elements */
-  .print\\:hidden,
+  .print\:hidden,
   aside,
   header,
   nav,
@@ -119,17 +138,16 @@ body {
   /* Remove shadows and border-radius */
   * {
     box-shadow: none !important;
-    border-radius: 0 !important;
   }
 
   /* Keep borders for structure */
   .border {
-    border-color: #dde1e7 !important;
+    border-color: #E2E8F0 !important;
   }
 
   /* AbbVie blue for headings */
   h1, h2, h3, h4 {
-    color: #0057a8 !important;
+    color: #071D49 !important;
   }
 
   /* Force all content visible / expanded */
@@ -152,12 +170,12 @@ body {
     content: "AbbVie Supply Chain Pulse  |  Q2 2026 Performance Review  |  Confidential";
     display: block;
     text-align: center;
-    font-family: "DM Sans", sans-serif;
+    font-family: "Inter", system-ui, sans-serif;
     font-size: 10px;
     font-weight: 500;
-    color: #0057a8;
+    color: #071D49;
     letter-spacing: 0.05em;
-    border-bottom: 2px solid #0057a8;
+    border-bottom: 2px solid #071D49;
     padding-bottom: 8px;
     margin-bottom: 16px;
   }
@@ -167,10 +185,10 @@ body {
     content: "Generated " attr(data-print-date) " | Strategic Management Office";
     display: block;
     text-align: center;
-    font-family: "DM Sans", sans-serif;
+    font-family: "Inter", system-ui, sans-serif;
     font-size: 9px;
-    color: #5a6a7a;
-    border-top: 1px solid #dde1e7;
+    color: #64748B;
+    border-top: 1px solid #E2E8F0;
     padding-top: 8px;
     margin-top: 24px;
     position: fixed;
@@ -182,7 +200,7 @@ body {
   /* Cards: clean for print */
   .bg-white {
     background: #ffffff !important;
-    border: 1px solid #dde1e7 !important;
+    border: 1px solid #E2E8F0 !important;
   }
 
   /* Ensure charts print */
