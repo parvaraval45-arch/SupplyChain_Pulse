@@ -95,6 +95,19 @@ body {
   box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.08), 0 1px 3px -1px rgb(0 0 0 / 0.06);
 }
 
+/* ─── CEO Mode — Projection-Optimized ──────────────────────────────────── */
+.ceo-view {
+  padding: 2rem 2.5rem;
+}
+
+.ceo-mode {
+  /* Slightly larger base gap for projection readability */
+}
+
+.ceo-mode > div[data-tab] {
+  gap: 2.5rem;
+}
+
 /* ─── Print Styles ────────────────────────────────────────────────────────── */
 @media print {
   @page {
@@ -118,7 +131,10 @@ body {
   header,
   nav,
   button,
-  [data-no-print] {
+  [data-no-print],
+  .lucide-chevron-down,
+  .lucide-chevron-up,
+  .lucide-refresh-cw {
     display: none !important;
   }
 
@@ -159,15 +175,29 @@ body {
   /* Page breaks before major sections */
   .grid {
     page-break-inside: avoid;
+    break-inside: avoid;
   }
 
   [data-print-section] {
     page-break-before: always;
+    break-before: page;
+  }
+
+  /* Cards should not break across pages */
+  .bg-white.rounded-xl {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Ensure charts stay with their containers */
+  .recharts-wrapper {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 
   /* Print header */
   body::before {
-    content: "AbbVie Supply Chain Pulse  |  Q2 2026 Performance Review  |  Confidential";
+    content: "AbbVie Supply Chain Pulse \2014  Q2 2026 Review";
     display: block;
     text-align: center;
     font-family: "Inter", system-ui, sans-serif;
@@ -182,7 +212,7 @@ body {
 
   /* Print footer */
   body::after {
-    content: "Generated " attr(data-print-date) " | Strategic Management Office";
+    content: "Generated " attr(data-print-date) " \2022  CONFIDENTIAL \2014  Internal Use Only";
     display: block;
     text-align: center;
     font-family: "Inter", system-ui, sans-serif;
@@ -201,10 +231,5 @@ body {
   .bg-white {
     background: #ffffff !important;
     border: 1px solid #E2E8F0 !important;
-  }
-
-  /* Ensure charts print */
-  .recharts-wrapper {
-    page-break-inside: avoid;
   }
 }

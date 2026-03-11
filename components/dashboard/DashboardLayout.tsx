@@ -42,6 +42,17 @@ export default function DashboardLayout({
   const [toast, setToast] = useState(false);
 
   const handleExport = useCallback(() => {
+    // Set print date dynamically before printing
+    const now = new Date();
+    const dateStr = now.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    document.body.setAttribute("data-print-date", dateStr);
+
     setToast(true);
     setTimeout(() => {
       window.print();
@@ -151,8 +162,13 @@ export default function DashboardLayout({
           </div>
         )}
 
-        {/* Content — #F8FAFC background */}
-        <main className="flex-1 overflow-y-auto bg-surface p-6 print:bg-white print:p-0 print:overflow-visible">
+        {/* Content — #F8FAFC background, extra padding in CEO mode */}
+        <main
+          className={clsx(
+            "flex-1 overflow-y-auto bg-surface p-6 print:bg-white print:p-0 print:overflow-visible",
+            ceoMode && "ceo-view"
+          )}
+        >
           {children?.({ activeTab, ceoMode, setActiveTab })}
         </main>
       </div>

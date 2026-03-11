@@ -250,3 +250,80 @@ export function InitiativeSummaryCard({
     </div>
   );
 }
+
+// ─── CEO Initiative Strip — Compact Horizontal Grid ──────────────────────────
+
+export function CEOInitiativeStrip({
+  onNavigate,
+}: {
+  onNavigate?: () => void;
+}) {
+  return (
+    <div className="bg-white border border-gray-100 rounded-xl shadow-card p-5 card-hover">
+      {/* Header row */}
+      <div className="flex items-center justify-between mb-4">
+        <span className="text-[11px] uppercase tracking-widest text-text-secondary font-semibold">
+          Strategic Initiatives
+        </span>
+        {onNavigate && (
+          <button
+            onClick={onNavigate}
+            className="flex items-center gap-1 text-[12px] font-semibold text-primary hover:text-dark transition-colors"
+          >
+            View all
+            <ArrowRight size={13} />
+          </button>
+        )}
+      </div>
+
+      {/* Initiative grid — single horizontal row on large screens */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        {INITIATIVES.map((init) => {
+          const cfg = STATUS_CFG[init.status];
+          return (
+            <div
+              key={init.id}
+              className="flex flex-col gap-2 p-3 rounded-lg bg-surface border border-gray-100"
+            >
+              {/* Initiative name — truncated */}
+              <p
+                className="text-[13px] font-semibold text-text-primary leading-tight truncate"
+                title={init.name}
+              >
+                {init.name}
+              </p>
+
+              {/* Progress bar */}
+              <div className="flex items-center gap-2">
+                <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all"
+                    style={{
+                      width: `${init.progress}%`,
+                      backgroundColor: cfg.hex,
+                    }}
+                  />
+                </div>
+                <span className="text-[11px] font-semibold tabular-nums text-text-primary w-7 text-right">
+                  {init.progress}%
+                </span>
+              </div>
+
+              {/* Status badge */}
+              <span
+                className={clsx(
+                  "inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase w-fit",
+                  cfg.bg,
+                  cfg.text
+                )}
+              >
+                <cfg.Icon size={10} />
+                {cfg.label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

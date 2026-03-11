@@ -2,6 +2,7 @@
 
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
+import clsx from "clsx";
 import { KPI_DATA, type KPI, type StatusColor } from "@/data/mockData";
 import { useDelayedLoad, SkeletonCard } from "@/components/ui/Skeleton";
 
@@ -11,7 +12,7 @@ const STATUS_HEX: Record<StatusColor, string> = {
   red: "#C4320A",
 };
 
-function KPICard({ kpi }: { kpi: KPI }) {
+function KPICard({ kpi, ceoMode = false }: { kpi: KPI; ceoMode?: boolean }) {
   const color = STATUS_HEX[kpi.status];
   const trendUp = kpi.trend === "up";
   const trendIsPositive =
@@ -21,7 +22,12 @@ function KPICard({ kpi }: { kpi: KPI }) {
   const chartData = kpi.history.map((v, i) => ({ i, v }));
 
   return (
-    <div className="relative bg-white border border-gray-100 rounded-xl shadow-card p-5 flex flex-col gap-3 overflow-hidden card-hover">
+    <div
+      className={clsx(
+        "relative bg-white border border-gray-100 rounded-xl shadow-card flex flex-col overflow-hidden card-hover",
+        ceoMode ? "p-3 gap-2" : "p-5 gap-3"
+      )}
+    >
       {/* Label + status dot + trend badge */}
       <div className="flex items-center justify-between">
         <span className="text-[11px] uppercase tracking-widest text-gray-400 font-semibold">
@@ -46,7 +52,12 @@ function KPICard({ kpi }: { kpi: KPI }) {
       </div>
 
       {/* Main value */}
-      <p className="text-4xl font-semibold tracking-tight text-text-primary tabular-nums">
+      <p
+        className={clsx(
+          "font-semibold tracking-tight text-text-primary tabular-nums",
+          ceoMode ? "text-3xl" : "text-4xl"
+        )}
+      >
         {kpi.value}
         <span className="text-[18px] text-text-secondary font-normal">{kpi.unit}</span>
       </p>
@@ -57,20 +68,22 @@ function KPICard({ kpi }: { kpi: KPI }) {
         {kpi.unit}
       </span>
 
-      {/* Sparkline */}
-      <div className="h-10 -mx-1">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData}>
-            <Line
-              type="monotone"
-              dataKey="v"
-              stroke={color}
-              strokeWidth={1.5}
-              dot={false}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      {/* Sparkline — hidden in CEO mode */}
+      {!ceoMode && (
+        <div className="h-10 -mx-1">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData}>
+              <Line
+                type="monotone"
+                dataKey="v"
+                stroke={color}
+                strokeWidth={1.5}
+                dot={false}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      )}
 
       {/* Bottom 3px colored bar */}
       <div
@@ -81,7 +94,7 @@ function KPICard({ kpi }: { kpi: KPI }) {
   );
 }
 
-export default function KPICards() {
+export default function KPICards({ ceoMode = false }: { ceoMode?: boolean }) {
   const ready = useDelayedLoad(800);
 
   if (!ready) {
@@ -97,7 +110,7 @@ export default function KPICards() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {KPI_DATA.map((kpi) => (
-        <KPICard key={kpi.id} kpi={kpi} />
+        <KPICard key={kpi.id} kpi={kpi} ceoMode={ceoMode} />
       ))}
     </div>
   );

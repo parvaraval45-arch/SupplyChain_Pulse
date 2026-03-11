@@ -414,7 +414,9 @@ export default function RiskRadar() {
           <h3 className="text-[13px] uppercase tracking-widest text-text-secondary font-semibold">
             Risk Signals
           </h3>
-          <FilterBar value={filter} onChange={setFilter} />
+          <div data-no-print>
+            <FilterBar value={filter} onChange={setFilter} />
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">
