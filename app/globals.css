@@ -2,26 +2,191 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  font-size: 14px;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #1a1a2e;
+  font-family: "DM Sans", sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f6f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a0b4cc;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0057a8;
+}
+
+/* Toast fade-in animation */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out;
+}
+
+/* Shimmer skeleton animation */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.shimmer-bar {
+  background: linear-gradient(90deg, #F4F6F9 25%, #E8ECF1 50%, #F4F6F9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Tab transition */
+.tab-enter {
+  animation: tab-fade 0.15s ease-out;
+}
+
+@keyframes tab-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* ─── Print Styles ────────────────────────────────────────────────────────── */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 16mm 12mm;
+  }
+
+  html {
+    font-size: 11px;
+  }
+
+  body {
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide interactive / non-printable elements */
+  .print\\:hidden,
+  aside,
+  header,
+  nav,
+  button,
+  [data-no-print] {
+    display: none !important;
+  }
+
+  /* Reset layout to single-column flow */
+  .flex.h-screen {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  main {
+    background: #ffffff !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Remove shadows and border-radius */
+  * {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* Keep borders for structure */
+  .border {
+    border-color: #dde1e7 !important;
+  }
+
+  /* AbbVie blue for headings */
+  h1, h2, h3, h4 {
+    color: #0057a8 !important;
+  }
+
+  /* Force all content visible / expanded */
+  details,
+  [data-expanded] {
+    display: block !important;
+  }
+
+  /* Page breaks before major sections */
+  .grid {
+    page-break-inside: avoid;
+  }
+
+  [data-print-section] {
+    page-break-before: always;
+  }
+
+  /* Print header */
+  body::before {
+    content: "AbbVie Supply Chain Pulse  |  Q2 2026 Performance Review  |  Confidential";
+    display: block;
+    text-align: center;
+    font-family: "DM Sans", sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    color: #0057a8;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #0057a8;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
+  /* Print footer */
+  body::after {
+    content: "Generated " attr(data-print-date) " | Strategic Management Office";
+    display: block;
+    text-align: center;
+    font-family: "DM Sans", sans-serif;
+    font-size: 9px;
+    color: #5a6a7a;
+    border-top: 1px solid #dde1e7;
+    padding-top: 8px;
+    margin-top: 24px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  /* Cards: clean for print */
+  .bg-white {
+    background: #ffffff !important;
+    border: 1px solid #dde1e7 !important;
+  }
+
+  /* Ensure charts print */
+  .recharts-wrapper {
+    page-break-inside: avoid;
   }
 }
